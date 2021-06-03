@@ -17,8 +17,13 @@ html, body {
     height: 99%;
     width: 100%;
 }
-#overlay{
+.overlay{
     position:absolute; top:50%; left:50%; transform: translate(-50%, -50%);
     text-align: center;
     color: white;
+    font-size: 2vw;
+}
+
+.incremental p{
+    display: none;
 }
