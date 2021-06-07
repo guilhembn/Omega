@@ -56,6 +56,9 @@
   <depend>dynamic_reconfigure</depend>
   <depend>pr2_controllers_msgs</depend>
   <depend>actionlib</depend>
+  <depend>cv_bridge</depend>
+  <depend>sensor_msgs</depend>
+  <depend>image_transport</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
