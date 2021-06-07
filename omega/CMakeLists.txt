@@ -18,6 +18,8 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(OpenCV REQUIRED)
+find_package(OpenSSL REQUIRED)
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -124,6 +126,7 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
+  ${OpenSSL_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -155,6 +158,7 @@ add_dependencies(omega ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TAR
 target_link_libraries(omega
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
+  ${OpenSSL_LIBRARIES}
 )
 
 #############

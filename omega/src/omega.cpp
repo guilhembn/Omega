@@ -1,6 +1,9 @@
 #include <ros/ros.h>
 #include "omega/enigma.hpp"
 #include "omega/delta.hpp"
+#include "omega/zeta.hpp"
+
+#include <openssl/md5.h>
 
 class OmegaCore{
     public:
@@ -15,9 +18,12 @@ class OmegaCore{
         std::string pass;
         std::cout << "Mot de passe : ";
         std::cin >> pass;
-        std::size_t h1 = std::hash<std::string>{}(pass);
-        if (h1 == 7404464429118221970){
+        unsigned char h[MD5_DIGEST_LENGTH];
+        MD5(pass.c_str(), pass.length(), h);
+        if (memcmp(h, "64a4e8faed1a1aa0bf8bf0fc84938d25") == 0){
             e_ = new Delta(nh_);
+        }else if(memcmp(h, "307ebb72d3e246ddae773de23b487ab6") == 0){
+            e_ = new Zeta(nh_);
         }
         if (e_ != nullptr){
             std::cout << "Mot de passe accepté." << std::endl;
