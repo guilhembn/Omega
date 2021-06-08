@@ -39,11 +39,12 @@ void Zeta::run(){
         }
         std::cout << std::endl;
         capture_ = true;
-        for (unsigned int i=0; i<10; i++){
+        for (unsigned int i=0; i<100; i++){
             if (lastAnswer_ != ' '){
                 break;
             }
-            ros::Duration(0.5).sleep();
+            ros::Duration(0.01).sleep();
+            ros::spinOnce();
         }
         capture_ = false;
         if (lastAnswer_ == ' '){
@@ -84,6 +85,7 @@ void Zeta::imageCb(const sensor_msgs::ImageConstPtr& msg){
     int index = -1;
     for (size_t i=0; i < markerIds.size(); i++){
         int markerId = markerIds[i];
+                std::cout << "Marker id" << markerId << std::endl;
         if (markerId == 13){
             index = i;
             break;
@@ -114,7 +116,7 @@ float Zeta::getAngle(const std::vector<cv::Point2f>& markerCorners) const{
     cv::Point2f topBary = (markerCorners[0] + markerCorners[1]) / 2.0f;
     cv::Point2f bottomBary = (markerCorners[2] + markerCorners[3]) / 2.0f;
     cv::Point2f orientVec = topBary - bottomBary;
-    return centerAngle(atan2f(orientVec.x, orientVec.y));  // Switch done on purpose.
+    return centerAngle(atan2f(orientVec.y, orientVec.x) + 1.57079632679);  // Switch done on purpose.
 }
 
 float Zeta::centerAngle(float angle){
