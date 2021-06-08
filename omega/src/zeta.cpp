@@ -1,11 +1,18 @@
 #include "omega/zeta.hpp"
 #include <sensor_msgs/image_encodings.h>
 #include <math.h> 
+#include <cv_bridge/cv_bridge.h>
+#include <stdexcept>
 
 
-Zeta::Zeta(ros::NodeHandlePtr nh): Enigma(nh), headact_("/head_traj_controller/point_head_action"), it_(nh_), capture_(false), lastAnswer_(''){
-    imgSub_ = it_.subscribe("/to/do/image_compressed", 1, &Zeta::imageCb, this);
-    dictionnary_ = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
+Zeta::Zeta(ros::NodeHandlePtr nh): Enigma(nh), headact_("/head_traj_controller/point_head_action"), it_(*nh_), capture_(false), lastAnswer_(' '){
+    imgSub_ = it_.subscribe("/wide_stereo/left/image_rect", 1, &Zeta::imageCb, this);
+    dictionary_ = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
+    headact_.waitForServer(ros::Duration(5.0));
+    if (!headact_.isServerConnected()){
+        std::cout << "Quelque chose ne va pas... Lancez vous bien cet executable sur le PR2 ? Le PR2 est-il prêt (i.e. robot.launch lancé) ?" << std::endl;
+        throw std::runtime_error("Arrêt du système Omega.");
+    }
 }
 
 std::string Zeta::name(){
@@ -15,13 +22,13 @@ std::string Zeta::name(){
 void Zeta::run(){
     char L[4] = {'A', 'B', 'C', 'D'};
     std::vector<std::tuple<std::string, std::vector<std::string>, char>> qs = {
-        {"Répondez A", {"Oui", "Non", "Toujours pas", "Nope..."} 'A'}, 
+        {"Répondez A", {"Oui", "Non", "Toujours pas", "Nope..."}, 'A'}, 
         {"Répondez B", {"Non", "Oui", "Nope", "Niet"}, 'B'}, 
         {"Répondez C", {"Noon", "No", "Oui", "Neg"}, 'C'},
         {"Répondez D", {"Non", "Non", "Non", "Oui"}, 'D'}};
     for (const auto &p: qs){
         capture_ = false;
-        lastAnswer_ = '';
+        lastAnswer_ = ' ';
         std::cout << std::get<0>(p) << std::endl;
         for (size_t i=0; i < std::get<1>(p).size(); i++){
             std::cout << L[i] << " - " << std::get<1>(p)[i] <<std::endl;
@@ -33,13 +40,13 @@ void Zeta::run(){
         std::cout << std::endl;
         capture_ = true;
         for (unsigned int i=0; i<10; i++){
-            if (lastAnswer_ != ''){
+            if (lastAnswer_ != ' '){
                 break;
             }
             ros::Duration(0.5).sleep();
         }
         capture_ = false;
-        if (lastAnswer_ == ''){
+        if (lastAnswer_ == ' '){
             std::cout << "No answer detected" << std::endl;
             return;
         }
@@ -73,7 +80,7 @@ void Zeta::imageCb(const sensor_msgs::ImageConstPtr& msg){
     std::vector<int> markerIds;
     std::vector<std::vector<cv::Point2f>> markerCorners, rejectedCandidates;
     cv::Ptr<cv::aruco::DetectorParameters> parameters = cv::aruco::DetectorParameters::create();
-    cv::aruco::detectMarkers(inputImage, dictionary, markerCorners, markerIds, parameters, rejectedCandidates);
+    cv::aruco::detectMarkers(cv_ptr->image, dictionary_, markerCorners, markerIds, parameters, rejectedCandidates);
     int index = -1;
     for (size_t i=0; i < markerIds.size(); i++){
         int markerId = markerIds[i];
@@ -110,7 +117,7 @@ float Zeta::getAngle(const std::vector<cv::Point2f>& markerCorners) const{
     return centerAngle(atan2f(orientVec.x, orientVec.y));  // Switch done on purpose.
 }
 
-static float Zeta::centerAngle(float angle){
+float Zeta::centerAngle(float angle){
     while (angle < -M_PI){
         angle += 2*M_PI;
     }

@@ -3,6 +3,8 @@
 #include "omega/enigma.hpp"
 #include <image_transport/image_transport.h>
 #include <opencv2/aruco.hpp>
+#include <actionlib/client/simple_action_client.h>
+#include <pr2_controllers_msgs/PointHeadAction.h>
 
 class Zeta: public Enigma{
     public:
