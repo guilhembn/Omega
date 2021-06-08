@@ -158,7 +158,7 @@ add_dependencies(omega ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TAR
 target_link_libraries(omega
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
-  ${OpenSSL_LIBRARIES}
+  OpenSSL::SSL
 )
 
 #############
