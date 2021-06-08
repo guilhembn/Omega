@@ -2,6 +2,7 @@
 #include "omega/enigma.hpp"
 #include "omega/delta.hpp"
 #include "omega/zeta.hpp"
+#include "omega/theta.hpp"
 
 #include <openssl/sha.h>
 
@@ -27,6 +28,8 @@ class OmegaCore{
             e_ = new Delta(nh_);
         }else if(memcmp(h, s, SHA_DIGEST_LENGTH) == 0){
             e_ = new Zeta(nh_);
+        }else if(memcmp(h, t, SHA_DIGEST_LENGTH) == 0){
+            e_ = new Theta(nh_);
         }
         if (e_ != nullptr){
             std::cout << "Mot de passe accepté." << std::endl;
