@@ -1,12 +1,17 @@
 #include "omega/delta.hpp"
 #include <dynamic_reconfigure/Reconfigure.h>
+#include <stdexcept>
 
 #define BASE_TIME 0.1
 
 Delta::Delta(ros::NodeHandlePtr nh): Enigma(nh), s(BASE_TIME), l(BASE_TIME*3), sp(BASE_TIME), le(BASE_TIME*2), wo(BASE_TIME*6)
         , headact_("/head_traj_controller/point_head_action"){
     cameraDynReconfigurePub_ = nh_->serviceClient<dynamic_reconfigure::Reconfigure>("/camera_synchronizer_node/set_parameters");
-    headact_.waitForServer();
+    headact_.waitForServer(ros::Duration(5.0));
+    if (!headact_.isServerConnected()){
+        std::cout << "Quelque chose ne va pas... Lancez vous bien cet executable sur le PR2 ? Le PR2 est-il prêt (i.e. robot.launch lancé) ?" << std::endl;
+        throw std::runtime_error("Arrêt du système Omega.");
+    }
 }
 
 std::string Delta::name(){
