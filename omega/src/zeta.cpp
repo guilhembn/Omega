@@ -21,11 +21,11 @@ std::string Zeta::name(){
 
 void Zeta::run(){
     char L[4] = {'A', 'B', 'C', 'D'};
-    std::vector<std::tuple<std::string, std::vector<std::string>, char>> qs = {
-        {"Répondez A", {"Oui", "Non", "Toujours pas", "Nope..."}, 'A'}, 
-        {"Répondez B", {"Non", "Oui", "Nope", "Niet"}, 'B'}, 
-        {"Répondez C", {"Noon", "No", "Oui", "Neg"}, 'C'},
-        {"Répondez D", {"Non", "Non", "Non", "Oui"}, 'D'}};
+    std::vector<std::tuple<std::string, std::vector<std::string>, char>> qs{
+        std::make_tuple("Répondez A", std::vector<std::string>({"Oui", "Non", "Toujours pas", "Nope..."}), 'A'), 
+        std::make_tuple("Répondez B", std::vector<std::string>({"Non", "Oui", "Nope", "Niet"}), 'B'), 
+        std::make_tuple("Répondez C", std::vector<std::string>({"Noon", "No", "Oui", "Neg"}), 'C'),
+        std::make_tuple("Répondez D", std::vector<std::string>({"Non", "Non", "Non", "Oui"}), 'D')};
     for (const auto &p: qs){
         capture_ = false;
         lastAnswer_ = ' ';
