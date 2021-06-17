@@ -101,16 +101,6 @@ void Zeta::run(){
         qs.push_back(std::make_tuple(demangleString(questions[i]), ans, L[cor[i]]));
     }    
     for (const auto &p: qs){
-        std::cout << std::get<0>(p) << std::endl;
-        for (size_t i=0; i < std::get<1>(p).size(); i++){
-            if (L[i] == std::get<2>(p)){
-                std::cout << ">>> ";
-            }
-            std::cout << L[i] << " - " << std::get<1>(p)[i] <<std::endl;
-        }
-        std::cout << demangleString(sec) << std::endl;
-        continue;
-
         capture_ = false;
         lastAnswer_ = ' ';
         std::string question = std::get<0>(p);
@@ -150,8 +140,8 @@ void Zeta::run(){
             say("Réponse valide.");
         }
     }
-    say("Félicitations");
-
+    say("Félicitations ! La suite se trouve dans le terminal.");
+    std::cout << "Félicitations !" << std::endl << demangleString(sec) << std::endl << "Fin de la procédure." << std::endl;
 }
 
 void Zeta::imageCb(const sensor_msgs::ImageConstPtr& msg){
@@ -224,20 +214,6 @@ void Zeta::say(const std::string& speech){
     msg.data = speech;
     sayPub_.publish(msg);
     ros::Duration(0.55 * (std::count(speech.cbegin(), speech.cend(), ' ') + 1)).sleep();
-}
-
-std::vector<uint8_t> Zeta::mangleString(const std::string& str){
-    std::ostringstream os;
-    for(unsigned char const& c : str)
-    {
-        os << std::hex << std::setprecision(2) << std::setw(2)
-        << std::setfill('0') << static_cast<int>(c);
-    }
-
-    std::string r = os.str();
-    std::vector<uint8_t> res(r.begin(), r.end());
-
-    return res;
 }
 
 std::string Zeta::demangleString(const std::vector<uint8_t>& vec){

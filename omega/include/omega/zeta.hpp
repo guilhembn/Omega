@@ -19,7 +19,6 @@ class Zeta: public Enigma{
     float getAngle(const std::vector<cv::Point2f>& markerCorner) const;
     static float centerAngle(float angle);
     void say(const std::string& speech);
-    std::vector<uint8_t> mangleString(const std::string& str);
     std::string demangleString(const std::vector<uint8_t>& str);
 
     actionlib::SimpleActionClient<pr2_controllers_msgs::PointHeadAction> headact_;
