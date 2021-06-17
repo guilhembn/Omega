@@ -26,12 +26,17 @@ void Zeta::run(){
         std::make_tuple("Répondez B", std::vector<std::string>({"Non", "Oui", "Nope", "Niet"}), 'B'), 
         std::make_tuple("Répondez C", std::vector<std::string>({"Noon", "No", "Oui", "Neg"}), 'C'),
         std::make_tuple("Répondez D", std::vector<std::string>({"Non", "Non", "Non", "Oui"}), 'D')};
+            };
     for (const auto &p: qs){
         capture_ = false;
         lastAnswer_ = ' ';
-        std::cout << std::get<0>(p) << std::endl;
+        std::string question = std::get<0>(p);
+        std::cout << question << std::endl;
+        say(question);
         for (size_t i=0; i < std::get<1>(p).size(); i++){
             std::cout << L[i] << " - " << std::get<1>(p)[i] <<std::endl;
+            say(std::get<1>(p)[i]);
+            ros::Duration(0.75).sleep();
         }
         for (unsigned int i=5; i>0; i--){
             std::cout << "\rValidation de la réponse dans " << i << " secondes" << std::flush;
@@ -54,12 +59,15 @@ void Zeta::run(){
         assert(lastAnswer_ == 'A' || lastAnswer_ == 'B' || lastAnswer_ == 'C' || lastAnswer_ == 'D');
         std::cout << "Votre réponse : " << lastAnswer_ << std::endl;
         if (lastAnswer_ != std::get<2>(p)){
-            std::cout << "Mauvaise réponse !" << std::endl;
+            std::cout << "Mauvaise réponse ! Fin de la procédure." << std::endl;
+            say("Mauvaise réponse ! Fin de la procédure.");
             return;
         }else{
-            std::cout << "Bien joué !";
+            std::cout << "Réponse valide." << std::endl;
+            say("Réponse valide.");
         }
     }
+    say("Félicitations")
 
 }
 
@@ -127,4 +135,11 @@ float Zeta::centerAngle(float angle){
         angle -= 2*M_PI;
     }
     return angle;
+}
+
+void Zeta::say(const std::string& speech){
+    std_msgs::String msg;
+    msg.data = speech;
+    sayPub_.publish(msg);
+    ros::Duration(0.45 * (std::count(speech.cbegin(), speech.cend(), ' ') + 1)).sleep();
 }

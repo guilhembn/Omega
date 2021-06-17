@@ -18,6 +18,7 @@ class Zeta: public Enigma{
     private:
     float getAngle(const std::vector<cv::Point2f>& markerCorner) const;
     static float centerAngle(float angle);
+    void say(const std::string& speech);
 
     actionlib::SimpleActionClient<pr2_controllers_msgs::PointHeadAction> headact_;
     image_transport::ImageTransport it_;
@@ -25,6 +26,7 @@ class Zeta: public Enigma{
     cv::Ptr<cv::aruco::Dictionary> dictionary_;
     bool capture_;
     char lastAnswer_;
+    ros::Publisher sayPub_;
 };
 
 #endif /* ZETA_HPP */
