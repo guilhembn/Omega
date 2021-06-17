@@ -3,11 +3,12 @@
 #include <math.h> 
 #include <cv_bridge/cv_bridge.h>
 #include <stdexcept>
-
+#include <std_msgs/String.h>
 
 Zeta::Zeta(ros::NodeHandlePtr nh): Enigma(nh), headact_("/head_traj_controller/point_head_action"), it_(*nh_), capture_(false), lastAnswer_(' '){
     imgSub_ = it_.subscribe("/wide_stereo/left/image_rect", 1, &Zeta::imageCb, this);
     dictionary_ = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
+    sayPub_ = nh->advertise<std_msgs::String>("/say", 1);
     headact_.waitForServer(ros::Duration(5.0));
     if (!headact_.isServerConnected()){
         std::cout << "Quelque chose ne va pas... Lancez vous bien cet executable sur le PR2 ? Le PR2 est-il prêt (i.e. robot.launch lancé) ?" << std::endl;
@@ -22,10 +23,27 @@ std::string Zeta::name(){
 void Zeta::run(){
     char L[4] = {'A', 'B', 'C', 'D'};
     std::vector<std::tuple<std::string, std::vector<std::string>, char>> qs{
-        std::make_tuple("Répondez A", std::vector<std::string>({"Oui", "Non", "Toujours pas", "Nope..."}), 'A'), 
-        std::make_tuple("Répondez B", std::vector<std::string>({"Non", "Oui", "Nope", "Niet"}), 'B'), 
-        std::make_tuple("Répondez C", std::vector<std::string>({"Noon", "No", "Oui", "Neg"}), 'C'),
-        std::make_tuple("Répondez D", std::vector<std::string>({"Non", "Non", "Non", "Oui"}), 'D')};
+        std::make_tuple("Combien de fonctionnalités de plus a Oro comparé à ontologenius ?", 
+            std::vector<std::string>({"5 fois plus", "10 fois plus", "20 fois plus", "100 fois plus"}), 'B'), 
+        std::make_tuple("Combien y avait-il de perles RIS répertoriées au 8 mai 2021 ?", 
+            std::vector<std::string>({"42", "51", "69", "101"}), 'C'), 
+        std::make_tuple("Sur combien de version de moveXD Jules a-t-il travaillé ?", 
+            std::vector<std::string>({"2", "3", "4", "5"}), 'B'),
+        std::make_tuple("Qui a dit “Je préfère être capitaliste que roux” ?", 
+            std::vector<std::string>({"David", "Jules", "Guillaume", "Amandine"}), 'A'),
+        std::make_tuple("Quel membre de RIS a donné son nom à une technique de tarot ?", 
+            std::vector<std::string>({"Amélie", "Amandine", "Guillaume", "Rafa"}), 'D'),    
+        std::make_tuple("Durant la calibration (après l’allumage) du PR2 les grippers se calibrent avant la tête.", 
+            std::vector<std::string>({"Vrai", "Faux"}), 'A'),  
+        std::make_tuple("Quelle peluche n’a jamais été présente dans l'open space le plus à l'Est ?", 
+            std::vector<std::string>({"Un neurone", "Une carotte", "Une baleine", "Un loup"}), 'D'),    
+        std::make_tuple("Durant le séminaire RIS 2018, la table d’Amandine est arrivée en deuxième position de la table ayant mangé le plus de raclette.", 
+            std::vector<std::string>({"Vrai", "Faux"}), 'B'), 
+        std::make_tuple("Combien de versions expliquant la couleur verte de la bière bue à Tampere le serveur a-t-il donné ?", 
+            std::vector<std::string>({"Une", "Deux", "Trois", "Quatre"}), 'B'), 
+        std::make_tuple("Que faut-il faire d’après Rachid ?", 
+            std::vector<std::string>({"Préciser et rajouter", "Argumenter et agrémenter", "Affiner et enrichir",
+                "Travailler incrémentalement, être modeste et ne pas viser trop loin trop vite"}), 'C'), 
             };
     for (const auto &p: qs){
         capture_ = false;
