@@ -8,7 +8,7 @@
 Zeta::Zeta(ros::NodeHandlePtr nh): Enigma(nh), headact_("/head_traj_controller/point_head_action"), it_(*nh_), capture_(false), lastAnswer_(' '){
     imgSub_ = it_.subscribe("/wide_stereo/left/image_rect", 1, &Zeta::imageCb, this);
     dictionary_ = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
-    sayPub_ = nh->advertise<std_msgs::String>("/say", 1);
+    sayPub_ = nh->advertise<std_msgs::String>("/say", 5);
     headact_.waitForServer(ros::Duration(5.0));
     if (!headact_.isServerConnected()){
         std::cout << "Quelque chose ne va pas... Lancez vous bien cet executable sur le PR2 ? Le PR2 est-il prêt (i.e. robot.launch lancé) ?" << std::endl;
@@ -53,7 +53,7 @@ void Zeta::run(){
         say(question);
         for (size_t i=0; i < std::get<1>(p).size(); i++){
             std::cout << L[i] << " - " << std::get<1>(p)[i] <<std::endl;
-            say(std::get<1>(p)[i]);
+            say(L[i] + ", " + std::get<1>(p)[i]);
             ros::Duration(0.75).sleep();
         }
         for (unsigned int i=5; i>0; i--){
@@ -71,7 +71,7 @@ void Zeta::run(){
         }
         capture_ = false;
         if (lastAnswer_ == ' '){
-            std::cout << "No answer detected" << std::endl;
+            std::cout << "Pas de réponse détectée, fin de la procédure." << std::endl;
             return;
         }
         assert(lastAnswer_ == 'A' || lastAnswer_ == 'B' || lastAnswer_ == 'C' || lastAnswer_ == 'D');
@@ -85,7 +85,7 @@ void Zeta::run(){
             say("Réponse valide.");
         }
     }
-    say("Félicitations")
+    say("Félicitations");
 
 }
 
@@ -111,7 +111,6 @@ void Zeta::imageCb(const sensor_msgs::ImageConstPtr& msg){
     int index = -1;
     for (size_t i=0; i < markerIds.size(); i++){
         int markerId = markerIds[i];
-                std::cout << "Marker id" << markerId << std::endl;
         if (markerId == 13){
             index = i;
             break;
@@ -159,5 +158,5 @@ void Zeta::say(const std::string& speech){
     std_msgs::String msg;
     msg.data = speech;
     sayPub_.publish(msg);
-    ros::Duration(0.45 * (std::count(speech.cbegin(), speech.cend(), ' ') + 1)).sleep();
+    ros::Duration(0.55 * (std::count(speech.cbegin(), speech.cend(), ' ') + 1)).sleep();
 }
