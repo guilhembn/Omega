@@ -19,6 +19,8 @@ class Zeta: public Enigma{
     float getAngle(const std::vector<cv::Point2f>& markerCorner) const;
     static float centerAngle(float angle);
     void say(const std::string& speech);
+    std::vector<uint8_t> mangleString(const std::string& str);
+    std::string demangleString(const std::vector<uint8_t>& str);
 
     actionlib::SimpleActionClient<pr2_controllers_msgs::PointHeadAction> headact_;
     image_transport::ImageTransport it_;
@@ -27,6 +29,12 @@ class Zeta: public Enigma{
     bool capture_;
     char lastAnswer_;
     ros::Publisher sayPub_;
+
+    static const std::vector<std::vector<uint8_t>> questions;
+    static const std::vector<std::vector<std::vector<uint8_t>>> answers;
+    static const std::vector<size_t> cor;
+    static const std::vector<uint8_t> sec;
+
 };
 
 #endif /* ZETA_HPP */
