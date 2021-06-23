@@ -190,3 +190,7 @@ body .cybr-btn + .cybr-btn {
 .overlay img{
     margin: 50px;
 }
+
+.whoami img{
+    max-height: 500px;
+}
