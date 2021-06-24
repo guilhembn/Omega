@@ -41,6 +41,14 @@ $level = (int)file_get_contents("../private/who_am_i_level");
         </div>
         <?php
         break;
+    case 5:
+        ?>
+        <div>
+            <img src="72b039fe-d4e2-11eb-b8bc-0242ac130003.png" alt="niveau 5" />
+        </div>
+        <?php
+        break;
+
 
 }
 ?>
