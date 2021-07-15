@@ -19,9 +19,55 @@ std::string Delta::name(){
 }
 
 void Delta::run() {
+    if (!waitForRunStop(5.0)){
+        if (!isRunStopEnabled_){
+            std::cout << "Merci d'activer le 'run/stop' du robot." << std::endl;
+            throw std::runtime_error("Arrêt du système Omega");
+        }
+    }
     look();
     breakWord();
     breakWord();
+    sendShort();
+    sendLong();
+    sendShort();
+    sendShort();
+    breakLetter();
+    sendShort();
+    sendLong();
+    breakWord();
+
+    sendShort();
+    sendLong();
+    sendShort();
+    breakLetter();
+    sendLong();
+    sendLong();
+    sendLong();
+    breakLetter();
+    sendShort();
+    sendShort();
+    sendLong();
+    breakLetter();
+    sendLong();
+    breakLetter();
+    sendShort();
+    breakWord();
+
+    sendShort();
+    breakLetter();
+    sendShort();
+    sendShort();
+    sendShort();
+    breakLetter();
+    sendLong();
+    breakWord();
+
+    sendShort();
+    breakLetter();
+    sendLong();
+    sendShort();
+    breakLetter();
     sendLong();
     sendShort();
     sendLong();
@@ -31,10 +77,145 @@ void Delta::run() {
     sendLong();
     sendLong();
     breakLetter();
+    sendShort();
+    sendLong();
+    sendShort();
+    breakLetter();
+    sendShort();
+    breakWord();
+
+    sendShort();
     sendLong();
     sendShort();
     sendShort();
     breakLetter();
+    sendLong();
+    sendLong();
+    sendLong();
+    breakLetter();
+    sendLong();
+    sendShort();
+    breakLetter();
+    sendLong();
+    sendLong();
+    sendShort();
+    breakLetter();
+    sendShort();
+    sendShort();
+    sendLong();
+    breakLetter();
+    sendShort();
+    breakWord();
+
+    breakWord();
+    breakWord();
+
+    sendShort();
+    sendShort();
+    sendShort();
+    sendShort();
+    breakLetter();
+    sendLong();
+    sendLong();
+    sendLong();
+    breakLetter();
+    sendLong();
+    sendLong();
+    breakLetter();
+    sendShort();
+    breakLetter();
+    sendShort();
+    sendLong();
+    sendLong();
+    sendShort();
+    breakLetter();
+    sendShort();
+    sendLong();
+    breakLetter();
+    sendLong();
+    sendLong();
+    sendShort();
+    breakLetter();
+    sendShort();
+    breakLetter();
+    sendShort();
+    sendShort();
+    sendShort();
+    breakWord();
+
+    sendShort();
+    sendLong();
+    sendShort();
+    sendShort();
+    breakLetter();
+    sendShort();
+    sendLong();
+    breakLetter();
+    sendShort();
+    sendLong();
+    breakLetter();
+    sendShort();
+    sendShort();
+    sendShort();
+    breakWord();
+
+    sendShort();
+    sendShort();
+    sendLong();
+    sendShort();
+    breakLetter();
+    sendShort();
+    sendLong();
+    sendShort();
+    breakWord();
+
+    sendLong();
+    sendLong();
+    sendShort();
+    breakLetter();
+    sendLong();
+    sendShort();
+    sendShort();
+    sendShort();
+    breakLetter();
+    sendShort();
+    sendShort();
+    sendLong();
+    breakLetter();
+    sendShort();
+    sendShort();
+    breakLetter();
+    sendShort();
+    sendShort();
+    sendShort();
+    breakLetter();
+    sendShort();
+    sendLong();
+    breakLetter();
+    sendLong();
+    sendShort();
+    breakWord();
+
+    sendShort();
+    sendLong();
+    sendLong();
+    breakLetter();
+    sendShort();
+    sendShort();
+    sendShort();
+    sendShort();
+    breakLetter();
+    sendLong();
+    sendLong();
+    sendLong();
+    breakLetter();
+    sendShort();
+    sendLong();
+    breakLetter();
+    sendLong();
+    sendLong();
+    breakLetter();
+    sendShort();
     sendShort();
     breakWord();
 }
