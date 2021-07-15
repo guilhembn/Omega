@@ -5,6 +5,7 @@
 #include <opencv2/aruco.hpp>
 #include <actionlib/client/simple_action_client.h>
 #include <pr2_controllers_msgs/PointHeadAction.h>
+#include <std_msgs/Bool.h>
 
 class Zeta: public Enigma{
     public:
@@ -20,6 +21,7 @@ class Zeta: public Enigma{
     static float centerAngle(float angle);
     void say(const std::string& speech);
     std::string demangleString(const std::vector<uint8_t>& str);
+    void look();    
 
     actionlib::SimpleActionClient<pr2_controllers_msgs::PointHeadAction> headact_;
     image_transport::ImageTransport it_;

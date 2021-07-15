@@ -79,10 +79,10 @@ Zeta::Zeta(ros::NodeHandlePtr nh): Enigma(nh), headact_("/head_traj_controller/p
     imgSub_ = it_.subscribe("/wide_stereo/left/image_rect", 1, &Zeta::imageCb, this);
     dictionary_ = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
     sayPub_ = nh->advertise<std_msgs::String>("/say", 5);
-    //headact_.waitForServer(ros::Duration(5.0));
+    headact_.waitForServer(ros::Duration(5.0));
     if (!headact_.isServerConnected()){
         std::cout << "Quelque chose ne va pas... Lancez vous bien cet executable sur le PR2 ? Le PR2 est-il prêt (i.e. robot.launch lancé) ?" << std::endl;
-        //throw std::runtime_error("Arrêt du système Omega.");
+        throw std::runtime_error("Arrêt du système Omega.");
     }
 }
 
@@ -91,6 +91,12 @@ std::string Zeta::name(){
 }
 
 void Zeta::run(){
+    if (!waitForRunStop(5.0)){
+        if (!isRunStopEnabled_){
+            std::cout << "Merci d'activer le 'run/stop' du robot." << std::endl;
+            throw std::runtime_error("Arrêt du système Omega");
+        }
+    }
     char L[4] = {'A', 'B', 'C', 'D'};
     std::vector<std::tuple<std::string, std::vector<std::string>, char>> qs;
     for (size_t i = 0; i < questions.size(); i++){
@@ -108,7 +114,7 @@ void Zeta::run(){
         say(question);
         for (size_t i=0; i < std::get<1>(p).size(); i++){
             std::cout << L[i] << " - " << std::get<1>(p)[i] <<std::endl;
-            say(L[i] + ", " + std::get<1>(p)[i]);
+            say(std::string(1, L[i]) + ", " + std::get<1>(p)[i]);
             ros::Duration(0.75).sleep();
         }
         for (unsigned int i=5; i>0; i--){
@@ -116,6 +122,7 @@ void Zeta::run(){
             ros::Duration(1.0).sleep();
         }
         std::cout << std::endl;
+        lastAnswer_ = ' ';
         capture_ = true;
         for (unsigned int i=0; i<100; i++){
             if (lastAnswer_ != ' '){
@@ -176,16 +183,16 @@ void Zeta::imageCb(const sensor_msgs::ImageConstPtr& msg){
     }
     float angle = getAngle(markerCorners[index]);
     if (angle <= 3*M_PI/4 && angle > M_PI/4){
-        std::cout << "B" << std::endl;
+        //std::cout << "B" << std::endl;
         lastAnswer_ = 'B';
     }else if (angle <= M_PI/4 && angle > -M_PI/4){
-        std::cout << "A" << std::endl;
+        //std::cout << "A" << std::endl;
         lastAnswer_ = 'A';
     }else if (angle <= -M_PI/4 && angle > -3*M_PI/4){
-        std::cout << "D" << std::endl;
+        //std::cout << "D" << std::endl;
         lastAnswer_ = 'D';
     }else{
-        std::cout << "C" << std::endl;
+        //std::cout << "C" << std::endl;
         lastAnswer_ = 'C';
     }
 }
@@ -196,7 +203,7 @@ float Zeta::getAngle(const std::vector<cv::Point2f>& markerCorners) const{
     cv::Point2f topBary = (markerCorners[0] + markerCorners[1]) / 2.0f;
     cv::Point2f bottomBary = (markerCorners[2] + markerCorners[3]) / 2.0f;
     cv::Point2f orientVec = topBary - bottomBary;
-    return centerAngle(atan2f(orientVec.y, orientVec.x) + 1.57079632679);  // Switch done on purpose.
+    return centerAngle(atan2f(orientVec.y, orientVec.x) + 1.57079632679);
 }
 
 float Zeta::centerAngle(float angle){
@@ -236,4 +243,23 @@ std::string Zeta::demangleString(const std::vector<uint8_t>& vec){
     }
 
     return output;
+}
+
+void Zeta::look(){
+    pr2_controllers_msgs::PointHeadGoal g;
+    geometry_msgs::PointStamped point;
+    point.header.frame_id = "base_footprint";
+    point.header.stamp = ros::Time::now();
+    point.point.x = 1.5;
+    point.point.y = 0.0;
+    point.point.z = 1.6;
+    g.target = point;
+    g.pointing_frame = "high_def_frame";
+    g.pointing_axis.x = 1;
+    g.pointing_axis.y = 0;
+    g.pointing_axis.z = 0;
+    g.min_duration = ros::Duration(5.0);
+    g.max_velocity = 1.0;
+    headact_.sendGoal(g);
+    headact_.waitForResult();
 }
