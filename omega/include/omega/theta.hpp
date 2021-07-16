@@ -18,6 +18,7 @@ class Theta: public Enigma{
     actionlib::SimpleActionClient<pr2_controllers_msgs::PointHeadAction> headact_;
     actionlib::SimpleActionClient<pr2_controllers_msgs::JointTrajectoryAction> leftArmAct_;
     actionlib::SimpleActionClient<pr2_controllers_msgs::JointTrajectoryAction> rightArmAct_;
+    actionlib::SimpleActionClient<pr2_controllers_msgs::JointTrajectoryAction> torsoLiftAct_;
 
     static const double STD_DURATION;
 };

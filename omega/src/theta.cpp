@@ -4,7 +4,8 @@
 const double Theta::STD_DURATION = 3.0;
 
 Theta::Theta(ros::NodeHandlePtr nh): Enigma(nh), headact_("/head_traj_controller/point_head_action"), 
-                rightArmAct_("/r_arm_controller/joint_trajectory_action"), leftArmAct_("/l_arm_controller/joint_trajectory_action"){
+                rightArmAct_("/r_arm_controller/joint_trajectory_action"), leftArmAct_("/l_arm_controller/joint_trajectory_action"),
+                torsoLiftAct_("/torso_lift_controller/joint_trajectory_action"){
     headact_.waitForServer(ros::Duration(5.0));
     if (!headact_.isServerConnected()){
         std::cout << "Quelque chose ne va pas... Lancez vous bien cet executable sur le PR2 ? Le PR2 est-il prêt (i.e. robot.launch lancé) ?" << std::endl;
@@ -64,12 +65,25 @@ void Theta::run() {
     }
     leftGoal.trajectory.points[0].time_from_start = ros::Duration(tfs);
     rightGoal.trajectory.points[0].time_from_start = ros::Duration(tfs);
+
+    pr2_controllers_msgs::JointTrajectoryGoal torsoLiftGoal;
+    torsoLiftGoal.trajectory.header.stamp = ros::Time::now();
+    torsoLiftGoal.trajectory.joint_names.push_back("torso_lift_joint");
+    torsoLiftGoal.trajectory.points.push_back({});
+    torsoLiftGoal.trajectory.points[0].positions.push_back(0.3);
+    torsoLiftGoal.trajectory.points[0].time_from_start = ros::Duration(1.0);
+
     leftArmAct_.sendGoal(leftGoal);
     rightArmAct_.sendGoal(rightGoal);
+    torsoLiftAct_.sendGoal(torsoLiftGoal);
     leftArmAct_.waitForResult();
     rightArmAct_.waitForResult();
+    torsoLiftAct_.waitForResult();
     leftArmAct_.getResult();
     rightArmAct_.getResult();
+    torsoLiftAct_.getResult();
+
+    ros::Duration(2.0).sleep();
 
     leftGoal.trajectory.points.clear();
     rightGoal.trajectory.points.clear();
