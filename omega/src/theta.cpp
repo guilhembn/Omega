@@ -72,7 +72,7 @@ void Theta::run() {
     torsoLiftGoal.trajectory.points.push_back({});
     torsoLiftGoal.trajectory.points[0].positions.push_back(0.3);
     torsoLiftGoal.trajectory.points[0].time_from_start = ros::Duration(1.0);
-
+    look();
     leftArmAct_.sendGoal(leftGoal);
     rightArmAct_.sendGoal(rightGoal);
     torsoLiftAct_.sendGoal(torsoLiftGoal);
@@ -667,4 +667,23 @@ void Theta::fillArmCommand(const std::string& side, pr2_controllers_msgs::JointT
         goal.trajectory.joint_names.emplace_back("r_wrist_flex_joint");
         goal.trajectory.joint_names.emplace_back("r_wrist_roll_joint");
     }
+}
+
+void Theta::look(){
+    pr2_controllers_msgs::PointHeadGoal g;
+    geometry_msgs::PointStamped point;
+    point.header.frame_id = "base_footprint";
+    point.header.stamp = ros::Time::now();
+    point.point.x = 1.5;
+    point.point.y = 0.0;
+    point.point.z = 1.6;
+    g.target = point;
+    g.pointing_frame = "high_def_frame";
+    g.pointing_axis.x = 1;
+    g.pointing_axis.y = 0;
+    g.pointing_axis.z = 0;
+    g.min_duration = ros::Duration(5.0);
+    g.max_velocity = 1.0;
+    headact_.sendGoal(g);
+    headact_.waitForResult();
 }

@@ -14,6 +14,7 @@ class Theta: public Enigma{
 
     private:
     void fillArmCommand(const std::string& side, pr2_controllers_msgs::JointTrajectoryGoal& goal);
+    void look();
 
     actionlib::SimpleActionClient<pr2_controllers_msgs::PointHeadAction> headact_;
     actionlib::SimpleActionClient<pr2_controllers_msgs::JointTrajectoryAction> leftArmAct_;
