@@ -85,7 +85,7 @@ $level = (int)file_get_contents("../private/who_am_i_level");
         break;
     case 11:
         ?>
-        <i>PR2</i><br /><i>Mot de passe :</i><br />It's me !
+        <i>PR2</i><br /><i>Mot de passe :</i><br />It's me !<br /><br /><a href="quiestce.pdf">Prenez ça.</a>
         <?php
         break;
 }
