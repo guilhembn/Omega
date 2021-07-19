@@ -194,3 +194,7 @@ body .cybr-btn + .cybr-btn {
 .whoami img{
     max-height: 500px;
 }
+
+a {
+    color: #aaa;
+}
