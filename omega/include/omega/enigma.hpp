@@ -10,11 +10,12 @@ class Enigma{
     };
 
     void onRunStop(const std_msgs::BoolConstPtr& msg){
-        if (isRunStopEnabled_ && !(msg->data)){
+        bool motorHalted = msg->data;
+        if (isRunStopEnabled_ && motorHalted){
             std::cout << "Désactivation du run/stop détectée." << std::endl;
             throw std::runtime_error("Arrêt du système Omega");
         }
-        isRunStopEnabled_ = msg->data;
+        isRunStopEnabled_ = !motorHalted;
     }
 
     virtual void run() = 0;
