@@ -5,7 +5,7 @@ const double Theta::STD_DURATION = 3.0;
 
 Theta::Theta(ros::NodeHandlePtr nh): Enigma(nh), headact_("/head_traj_controller/point_head_action"), 
                 rightArmAct_("/r_arm_controller/joint_trajectory_action"), leftArmAct_("/l_arm_controller/joint_trajectory_action"),
-                torsoLiftAct_("/torso_lift_controller/joint_trajectory_action"){
+                torsoLiftAct_("/torso_controller/joint_trajectory_action"){
     headact_.waitForServer(ros::Duration(5.0));
     if (!headact_.isServerConnected()){
         std::cout << "Quelque chose ne va pas... Lancez vous bien cet executable sur le PR2 ? Le PR2 est-il prêt (i.e. robot.launch lancé) ?" << std::endl;
