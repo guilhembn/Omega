@@ -92,7 +92,7 @@ void Theta::run() {
     rightGoal.trajectory.points.push_back({});
     rightGoal.trajectory.header.stamp = ros::Time::now();
     leftGoal.trajectory.header.stamp = ros::Time::now();
-    tfs = 6.0 * STD_DURATION;
+    tfs = 3.0 * STD_DURATION;
     int n = leftGoal.trajectory.points.size() - 1;
     leftGoal.trajectory.points[n].positions.push_back(1.57);
     leftGoal.trajectory.points[n].positions.push_back(-0.5);
