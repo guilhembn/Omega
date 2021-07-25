@@ -184,7 +184,7 @@ void Theta::run() {
     leftGoal.trajectory.points[n].positions.push_back(0.0);
     rightGoal.trajectory.points[n].positions.push_back(-1.57);
     rightGoal.trajectory.points[n].positions.push_back(-0.5);
-    rightGoal.trajectory.points[n].positions.push_back(3.1415);
+    rightGoal.trajectory.points[n].positions.push_back(3.1416);
     rightGoal.trajectory.points[n].positions.push_back(-1.57);
     rightGoal.trajectory.points[n].positions.push_back(0.0);
     rightGoal.trajectory.points[n].positions.push_back(0.0);
@@ -293,7 +293,7 @@ void Theta::run() {
     leftGoal.trajectory.points[n].positions.push_back(0.0);
     rightGoal.trajectory.points[n].positions.push_back(-1.57);
     rightGoal.trajectory.points[n].positions.push_back(0.0);
-    rightGoal.trajectory.points[n].positions.push_back(3.1415);
+    rightGoal.trajectory.points[n].positions.push_back(3.1416);
     rightGoal.trajectory.points[n].positions.push_back(-1.57);
     rightGoal.trajectory.points[n].positions.push_back(0.0);
     rightGoal.trajectory.points[n].positions.push_back(0.0);
@@ -402,7 +402,7 @@ void Theta::run() {
     leftGoal.trajectory.points[n].positions.push_back(0.0);
     rightGoal.trajectory.points[n].positions.push_back(-1.57);
     rightGoal.trajectory.points[n].positions.push_back(0.0);
-    rightGoal.trajectory.points[n].positions.push_back(3.1415);
+    rightGoal.trajectory.points[n].positions.push_back(3.1416);
     rightGoal.trajectory.points[n].positions.push_back(-1.57);
     rightGoal.trajectory.points[n].positions.push_back(0.0);
     rightGoal.trajectory.points[n].positions.push_back(0.0);
@@ -456,7 +456,7 @@ void Theta::run() {
     leftGoal.trajectory.points[n].positions.push_back(0.0);
     rightGoal.trajectory.points[n].positions.push_back(-1.57);
     rightGoal.trajectory.points[n].positions.push_back(0.0);
-    rightGoal.trajectory.points[n].positions.push_back(3.1415);
+    rightGoal.trajectory.points[n].positions.push_back(3.1416);
     rightGoal.trajectory.points[n].positions.push_back(-1.57);
     rightGoal.trajectory.points[n].positions.push_back(0.0);
     rightGoal.trajectory.points[n].positions.push_back(0.0);
