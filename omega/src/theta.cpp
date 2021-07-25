@@ -43,7 +43,7 @@ void Theta::run() {
     fillArmCommand("left", leftGoal);
     fillArmCommand("right", rightGoal);
     leftGoal.trajectory.points.resize(1);
-    tfs += STD_DURATION;
+    tfs += 3 * STD_DURATION;
     leftGoal.trajectory.points[0].positions.push_back(0.0);
     leftGoal.trajectory.points[0].positions.push_back(1.109);
     leftGoal.trajectory.points[0].positions.push_back(0.0);
@@ -90,7 +90,7 @@ void Theta::run() {
 
     leftGoal.trajectory.points.push_back({});
     rightGoal.trajectory.points.push_back({});
-    tfs += STD_DURATION;
+    tfs += 3 * STD_DURATION;
     int n = leftGoal.trajectory.points.size() - 1;
     leftGoal.trajectory.points[n].positions.push_back(1.57);
     leftGoal.trajectory.points[n].positions.push_back(-0.5);
