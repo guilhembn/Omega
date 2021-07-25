@@ -97,6 +97,7 @@ void Zeta::run(){
             throw std::runtime_error("Arrêt du système Omega");
         }
     }
+    look();
     char L[4] = {'A', 'B', 'C', 'D'};
     std::vector<std::tuple<std::string, std::vector<std::string>, char>> qs;
     for (size_t i = 0; i < questions.size(); i++){
