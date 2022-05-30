@@ -1,0 +1,16 @@
+body{
+    background-color: #002222;
+}
+
+#cd {
+    align-content: center;
+    font-family: 'Orbitron', sans-serif;
+    color: #dd4444;
+    text-shadow: 0 0 20px rgba(255, 80, 80, 1), 0 0 20px rgba(255, 80, 80, 0);
+    letter-spacing: 0.05em;
+    font-size: 2em;
+    padding: 2em 0;
+    text-align: center;
+    margin-top: 50vh;
+    transform: translateY(-50%);
+}

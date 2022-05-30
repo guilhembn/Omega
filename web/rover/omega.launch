@@ -1,4 +1,4 @@
 <launch>
-    <node name="tts" pkg="gcloud_speech" type="tts.py" launch-prefix="bash -c '$0 $@ >/dev/null 2>/dev/null' " />
+    <node name="tts" pkg="gcloud_speech" type="tts.py" args="fr" launch-prefix="bash -c '$0 $@ >/dev/null 2>/dev/null' " />
     <node name="omega" pkg="omega" type="omega" output="screen"/>
 </launch>
